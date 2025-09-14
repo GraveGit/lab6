@@ -1,0 +1,20 @@
+# Версия схемы файла Docker Compose
+version: "3.9"
+
+# Определение сервисов (контейнеров)
+services:
+  # Имя сервиса: dbpost
+  dbpost:
+    # Используемый образ
+    image: postgres:latest
+    # Установка переменных окружения для настройки БД
+    environment:
+      POSTGRES_DB: dbcompose      # Имя БД
+      POSTGRES_USER: usrcompose   # Имя пользователя
+      POSTGRES_PASSWORD: passcompose # Пароль
+    # Монтирование томов: файл init.sql с хоста в директорию инициализации контейнера
+    volumes:
+      - ./init_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    # Проброс портов: порт 8081 на хосте -> порт 5432 в контейнере
+    ports:
+      - 127.0.0.1:8081:5432
